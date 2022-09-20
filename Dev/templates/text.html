@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}
+text
+{% endblock title %} 
+
+{% block content %}
+{% load post_tags %}
+{% load static %}
+
+<div class="container">
+{% for product in pro %}
+
+<div class="col-12 d-flex mx-auto flex-wrap bg-primary text-block">
+    {% for product in pro %}
+    <div class="card mx-3 my-2" style="width: 12rem; display:flex">
+     <img src="{{product.pro_image.url}}" class="card-img-top" alt="..." height=150>
+     <div class="card-body">
+       <h5 class="card-title">{{product.product_name}}</h5>
+       <p class="card-text">{{product.desc}}</p>
+       <p class="card-text">Rs.{{product.price}}</p>
+       {% comment %} <a href="#" class="btn btn-primary">Add to Card</a> {% endcomment %}
+     </div>
+   
+    
+
+   <div class="card-footer text-center">
+
+     <div class="row">
+      
+  
+        {% if product|is_exit_in_cart:request.session.cart %}
+        <div class="row">
+
+         <div class="col-2">
+         <form action="#{{product.id}}"method="POST">
+           {% csrf_token %}
+           <input type="text" name="cartid" value="{{product.id}}"hidden>
+          <input type="text" name="minus" value="{{product.id}}"hidden>
+             <button type="submit" class="btn btn-primary"> - </a>
+           </form>
+         </div>
+         <div class="col-8">
+
+              {{product|cartquntity:request.session.cart }}
+         </div>
+
+         <div class="col-2">
+
+           <form action="#{{product.id}}"method="POST">
+             {% csrf_token %}
+            <input type="text" name="cartid" value="{{product.id}}"hidden>
+               <button type="submit" class="btn btn-primary"> + </a>
+             </form>
+
+         </div>
+        </div>
+
+            {% else %} 
+              
+            <div class="col">
+               <form action="#{{product.id}}"method="POST">
+               {% csrf_token %}
+              <input type="text" name="cartid" value="{{product.id}}"hidden>
+                 <button type="submit" class="btn btn-primary">Add to Card</a>
+               </form>
+
+             </div>
+          
+       {% endif %}
+     </div>
+
+   </div>
+ </div>
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+{% endfor %}
+
+
+
+
+
+
+
+
+
+</div>
+
+{% endblock content %}
